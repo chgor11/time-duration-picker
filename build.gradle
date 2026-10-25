@@ -2,13 +2,6 @@ plugins {
     id 'com.android.library' version '8.1.0' apply false
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
 if (file('local.gradle').exists()) {
     apply from: 'local.gradle'
 }
