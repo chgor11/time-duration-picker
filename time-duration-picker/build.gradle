@@ -14,6 +14,12 @@ android {
         versionName "1.1.3"
     }
 
+    publishing {
+            singleVariant("release") {
+                withSourcesJar()
+            }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
