@@ -1,3 +1,8 @@
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
+
 buildscript {
     repositories {
         jcenter()
@@ -36,12 +41,13 @@ repositories {
 }
 
 android {
-    compileSdkVersion 27
+    namespace 'com.chgor11.timedurationpicker'
+    compileSdkVersion 35
     buildToolsVersion "27.0.3"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 27
+        targetSdkVersion 35
         versionCode 1
         versionName "1.0"
     }
@@ -51,11 +57,28 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures {
+        buildConfig true
+    }
 }
 
 dependencies {
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.fragment:fragment:1.8.4'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.1.1'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.chgor11'
+                artifactId = 'time-duration-picker'
+            }
+        }
+    }
 }
 
 // JCenter upload scripts taken from
