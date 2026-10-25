@@ -13,4 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
+rootProject.name = 'time-duration-picker'
 include ':time-duration-picker', ':sample'
