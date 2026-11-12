@@ -34,31 +34,32 @@ jobs:
       - name: Install Android SDK components
         shell: bash
         run: |
-          set -euo pipefail
+          set -euxo pipefail
 
           export ANDROID_HOME="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
           export ANDROID_SDK_ROOT="$ANDROID_HOME"
 
-          if ! command -v sdkmanager >/dev/null 2>&1; then
-            SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" \
-              -type f -name sdkmanager -print -quit)"
+          echo "ANDROID_HOME=$ANDROID_HOME"
 
-            if [ -z "$SDKMANAGER" ]; then
-              echo "Android SDK command-line tools not found"
+          SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" \
+            -type f -name sdkmanager -print -quit)"
+
+          if [ -z "$SDKMANAGER" ]; then
+              echo "ERROR: sdkmanager not found"
               exit 1
-            fi
-
-            export PATH="$(dirname "$SDKMANAGER"):$PATH"
           fi
 
-          yes | sdkmanager --sdk_root="$ANDROID_HOME" --licenses
+          echo "SDKMANAGER=$SDKMANAGER"
 
-          sdkmanager --sdk_root="$ANDROID_HOME" \
+          "$SDKMANAGER" --version
+
+          "$SDKMANAGER" --sdk_root="$ANDROID_HOME" --licenses
+
+          "$SDKMANAGER" --sdk_root="$ANDROID_HOME" \
             "platforms;android-36" \
             "build-tools;36.0.0"
 
-          echo "ANDROID_HOME=$ANDROID_HOME" >> "$GITHUB_ENV"
-          echo "ANDROID_SDK_ROOT=$ANDROID_HOME" >> "$GITHUB_ENV"
+          echo "SDK installation completed successfully"
 
       - name: Build and publish Maven artifacts
         shell: bash
