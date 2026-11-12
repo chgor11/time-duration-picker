@@ -53,4 +53,11 @@ afterEvaluate {
             }
         }
     }
+    repositories {
+        maven {
+            name = 'GitHubPages'
+            url = uri(providers.gradleProperty('mavenRepoDir')
+                    .getOrElse("${buildDir}/maven-repository"))
+        }
+    }
 }
